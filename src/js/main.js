@@ -4,48 +4,99 @@ const headersEl = document.getElementById('headers');
 const configEl = document.getElementById('config');
 
 const get = () => {
-    
-    axios.get("https://jsonplaceholder.typicode.com/posts/", {
-        params: {
-            _limit: 5,
-        },
-        })
-        .then((response) => {
-            renderOutput(response);
-        })
-    
-    
-    
-    /*
-    axios({
-        method: "get",
-        url: "https://jsonplaceholder.typicode.com/posts/"
-    })
-    */
+
+	// axios({method: "get", url: "https://jsonplaceholder.typicode.com/posts?_limit=5"})
+
+	const config = {
+			params: {
+					_limit: 5,
+			},
+		};
+
+	axios.get("https://jsonplaceholder.typicode.com/posts/", config)
+			.then((response) => renderOutput(response));
+
 }
 
 const post = () => {
-    console.log('post');
+
+	const data = {
+    title: 'Vue3',
+    body: 'bar',
+    userId: 1,
+  };
+
+	axios.post("https://jsonplaceholder.typicode.com/posts/", data)
+			.then((response) => renderOutput(response));
 }
 
 const put = () => {
-    console.log('put');
+
+	let id = 5
+
+	const data = {
+		//id: id,
+    title: 'Vue3',
+    body: 'bar',
+    userId: 1,
+  };
+
+	axios.put(`https://jsonplaceholder.typicode.com/posts/${id}`, data)
+			.then((response) => renderOutput(response));
 }
 
 const patch = () => {
-    console.log('patch');
+
+	let id = 5
+
+	const data = {
+		//id: id,
+    title: 'Django',
+  };
+
+	axios.patch(`https://jsonplaceholder.typicode.com/posts/${id}`, data)
+			.then((response) => renderOutput(response));
 }
 
 const del = () => {
-    console.log('delete');
+
+	let id = 1
+
+	axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
+			.then((response) => renderOutput(response));
 }
 
 const multiple = () => {
-    console.log('multiple');
+  
+	//axios.all();
+	
+	Promise.all([
+		axios.get("https://jsonplaceholder.typicode.com/posts?_limit=5"),
+		axios.get("https://jsonplaceholder.typicode.com/users?_limit=5"),
+		axios.get("https://jsonplaceholder.typicode.com/albums?_limit=5")
+	]).then((response) => {
+
+		//console.log(response[0].data)
+		//console.log(response[1].data)
+		//console.log(response[2].data)
+		console.table(response[0].data)
+		console.table(response[1].data)
+		console.table(response[2].data)
+
+	})
+
 }
 
 const transform = () => {
-    console.log('transform');
+
+	const config = {
+		params: {
+				_limit: 5,
+		},
+	};
+
+	axios.get("https://jsonplaceholder.typicode.com/posts/", config)
+			.then((response) => renderOutput(response));
 }
 
 const errorHandling = () => {
