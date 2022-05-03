@@ -93,6 +93,18 @@ const transform = () => {
 		params: {
 				_limit: 5,
 		},
+	// `transformResponse` permite mudar os dados da responsta antes de ser passado para o then/catch
+	 transformResponse: [function (data) {
+		// Faça o que quiser para transformar os dados
+		const payload = JSON.parse(data).map(o => {
+			return {
+				//title: o.title,
+				...o,
+				is_selected: false,
+			};
+		});
+		return payload;
+	  }],
 	};
 
 	axios.get("https://jsonplaceholder.typicode.com/posts/", config)
