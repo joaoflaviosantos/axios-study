@@ -36,8 +36,8 @@ const put = () => {
 
 	const data = {
 		//id: id,
-    title: 'Vue3',
-    body: 'bar',
+    title: 'Sunt Aut Facere Occaecati Excepturi Optio Reprehenderit',
+    body: 'quia et suscipit suscipit recusandae consequuntur expedita et cum reprehenderit molestiae ut ut quas totam nostrum rerum est autem sunt rem eveniet architecto, quia et suscipit suscipit recusandae consequuntur expedita et cum reprehenderit molestiae ut',
     userId: 1,
   };
 
@@ -93,6 +93,7 @@ const transform = () => {
 		params: {
 				_limit: 5,
 		},
+
 	// `transformResponse` permite mudar os dados da responsta antes de ser passado para o then/catch
 	 transformResponse: [function (data) {
 		// Faça o que quiser para transformar os dados
@@ -100,7 +101,7 @@ const transform = () => {
 			return {
 				//title: o.title,
 				...o,
-				is_selected: false,
+				is_selected: true,
 			};
 		});
 		return payload;
@@ -112,11 +113,41 @@ const transform = () => {
 }
 
 const errorHandling = () => {
-    console.log('errorHandling');
+
+	axios.get("https://jsonplaceholder.typicode.com/postsz/")
+	.then((response) => renderOutput(response))
+	.catch((error) => {
+		renderOutput(error.response);
+
+		console.log(error.response);
+		console.log(error.response.data);
+		console.log(error.response.headers);
+		console.log(error.message);
+		console.log(error.response.status);
+		console.log(error.response.statusText);
+	});
 }
 
 const cancel = () => {
-    console.log('cancel');
+
+	const controller = new AbortController();
+
+	const config = {
+		params: {
+				_limit: 5,
+		},
+		signal: controller.signal
+	};
+
+	axios.get("https://jsonplaceholder.typicode.com/posts/", config)
+		.then((response) => renderOutput(response))
+		.catch((error) => {
+			console.log(error.response);
+			console.log(error.message);
+		});
+
+	// cancel the request
+	controller.abort();
 }
 
 const clear = () => {

@@ -1,4 +1,3 @@
-# Curso gratuito Axios
-Arquivos do curso gratuito Axios
+# Free Axios Youtube Course
 
-[Link do curso](https://www.youtube.com/playlist?list=PLcoYAcR89n-pbc60vYzVD1Fva5KaPmlGQ)
+[Course link](https://www.youtube.com/playlist?list=PLcoYAcR89n-pbc60vYzVD1Fva5KaPmlGQ)
