@@ -3,6 +3,66 @@ const dataEl = document.getElementById('data');
 const headersEl = document.getElementById('headers');
 const configEl = document.getElementById('config');
 
+/* ----------------------------------------------------------------------- */
+// Configura uma baseURL para ser reaproveitado nas requisições
+axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com';
+/* ----------------------------------------------------------------------- */
+
+
+/* ----------------------------------------------------------------------- */
+// Define as configurações padrões quando cria a instância
+const newAxios = axios.create({
+	baseURL: 'https://api.example.com',
+	headers: {
+		common: {
+			Authorization: 'new Axios',
+		}
+	}
+  });
+
+// Altera as configurações padrões após a instância ser criada
+//newAxios.defaults.headers.common['Authorization'] = 'new axios';
+/* ----------------------------------------------------------------------- */
+
+
+/* ----------------------------------------------------------------------- */
+// Adiciona um interceptador na requisição
+axios.interceptors.request.use(function (config) {
+    // Faz alguma coisa antes da requisição ser enviada
+	config.headers.common.Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImF5bGFuQGJvc2Nhcmluby5jb20iLCJwYXNzd29yZCI6InlhMGdzcWh5NHd6dnV2YjQifQ.yN_8-Mge9mFgsnYHnPEh_ZzNP7YKvSbQ3Alug9HMCsM'
+	
+	/*
+	if (config.method == 'post') {
+		config.data += {
+		data_injected_by_interceptor: 'John',
+	};
+	}
+	*/
+	
+	console.log(config.headers.common);
+	console.log(config.data);
+    return config;
+  }, function (error) {
+    // Faz alguma coisa com o erro da requisição
+    return Promise.reject(error);
+  });
+
+// Adiciona um interceptador na resposta
+axios.interceptors.response.use(function (response) {
+    // Qualquer código de status que dentro do limite de 2xx faz com que está função seja acionada
+    // Faz alguma coisa com os dados de resposta
+	console.log('Success');
+    return response;
+  }, function (error) {
+    // Qualquer código de status que não esteja no limite do código 2xx faz com que está função seja acionada
+    // Faz alguma coisa com o erro da resposta
+	console.log('Error');
+    return Promise.reject(error);
+  });
+/* ----------------------------------------------------------------------- */
+
+
+/* ----------------------------------------------------------------------- */
 const get = () => {
 
 	// axios({method: "get", url: "https://jsonplaceholder.typicode.com/posts?_limit=5"})
@@ -12,12 +72,16 @@ const get = () => {
 					_limit: 5,
 			},
 		};
-
-	axios.get("https://jsonplaceholder.typicode.com/posts/", config)
+	
+	//newAxios.get("posts", config)
+	axios.get("posts", config)
 			.then((response) => renderOutput(response));
 
 }
+/* ----------------------------------------------------------------------- */
 
+
+/* ----------------------------------------------------------------------- */
 const post = () => {
 
 	const data = {
@@ -26,10 +90,13 @@ const post = () => {
     userId: 1,
   };
 
-	axios.post("https://jsonplaceholder.typicode.com/posts/", data)
+	axios.post("posts", data)
 			.then((response) => renderOutput(response));
 }
+/* ----------------------------------------------------------------------- */
 
+
+/* ----------------------------------------------------------------------- */
 const put = () => {
 
 	let id = 5
@@ -41,10 +108,13 @@ const put = () => {
     userId: 1,
   };
 
-	axios.put(`https://jsonplaceholder.typicode.com/posts/${id}`, data)
+	axios.put(`posts/${id}`, data)
 			.then((response) => renderOutput(response));
 }
+/* ----------------------------------------------------------------------- */
 
+
+/* ----------------------------------------------------------------------- */
 const patch = () => {
 
 	let id = 5
@@ -54,26 +124,32 @@ const patch = () => {
     title: 'Django',
   };
 
-	axios.patch(`https://jsonplaceholder.typicode.com/posts/${id}`, data)
+	axios.patch(`posts/${id}`, data)
 			.then((response) => renderOutput(response));
 }
+/* ----------------------------------------------------------------------- */
 
+
+/* ----------------------------------------------------------------------- */
 const del = () => {
 
 	let id = 1
 
-	axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
+	axios.delete(`posts/${id}`)
 			.then((response) => renderOutput(response));
 }
+/* ----------------------------------------------------------------------- */
 
+
+/* ----------------------------------------------------------------------- */
 const multiple = () => {
   
 	//axios.all();
 	
 	Promise.all([
-		axios.get("https://jsonplaceholder.typicode.com/posts?_limit=5"),
-		axios.get("https://jsonplaceholder.typicode.com/users?_limit=5"),
-		axios.get("https://jsonplaceholder.typicode.com/albums?_limit=5")
+		axios.get("posts?_limit=5"),
+		axios.get("users?_limit=5"),
+		axios.get("albums?_limit=5")
 	]).then((response) => {
 
 		//console.log(response[0].data)
@@ -86,7 +162,10 @@ const multiple = () => {
 	})
 
 }
+/* ----------------------------------------------------------------------- */
 
+
+/* ----------------------------------------------------------------------- */
 const transform = () => {
 
 	const config = {
@@ -108,10 +187,13 @@ const transform = () => {
 	  }],
 	};
 
-	axios.get("https://jsonplaceholder.typicode.com/posts/", config)
+	axios.get("posts", config)
 			.then((response) => renderOutput(response));
 }
+/* ----------------------------------------------------------------------- */
 
+
+/* ----------------------------------------------------------------------- */
 const errorHandling = () => {
 
 	axios.get("https://jsonplaceholder.typicode.com/postsz/")
@@ -127,7 +209,10 @@ const errorHandling = () => {
 		console.log(error.response.statusText);
 	});
 }
+/* ----------------------------------------------------------------------- */
 
+
+/* ----------------------------------------------------------------------- */
 const cancel = () => {
 
 	const controller = new AbortController();
@@ -149,6 +234,7 @@ const cancel = () => {
 	// cancel the request
 	controller.abort();
 }
+/* ----------------------------------------------------------------------- */
 
 const clear = () => {
     statusEl.innerHTML = '';
